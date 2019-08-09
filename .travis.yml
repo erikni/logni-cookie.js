@@ -1,0 +1,54 @@
+language: node_js
+sudo: enabled
+
+node_js:
+  - 'node'
+  - '10'
+  - '8'
+  - '6'
+
+cache:
+  directories:
+    - "node_modules"
+
+branches:
+  only:
+  - master
+  - develop
+
+before_install:
+  - mkdir -p build/js
+  - sudo apt-get install -y nodejs
+  - node --version
+  - rm -rf ./node_modules package-lock.json
+  - npm install 
+
+install:
+  - npm install --save-dev babel-minify uglify-es uglifyjs-webpack-plugin # minify
+  - npm install --save-dev babel-cli babel-preset-env # es5 convert
+  - npm install --save-dev -g npx
+  - npm install --save-dev -g jshint # code quality
+  - npm install --save-dev -g istanbul
+  - sudo pip install codecov
+
+# command to run tests
+script: 
+  - echo "jshint src/logni-cookie.js ... "
+  - jshint --verbose --show-non-errors src/logni-cookie.js
+
+  - echo "convert es6->es5 build/js/logni-cookie-es5.js ... "
+  - npx babel src/logni-cookie.js --presets babel-preset-env > build/js/logni-cookie-es5.js
+
+  - echo "babel minify logni-cookie[-es5].js ... "
+  - ./node_modules/babel-minify/bin/minify.js src/logni-cookie.js         -o build/js/logni-cookie.min.js
+  - ./node_modules/babel-minify/bin/minify.js build/js/logni-cookie-es5.js -o build/js/logni-cookie-es5.min.js
+
+  - echo "uglifyjs es6 minify src/logni-cookie.js ... "
+  - ./node_modules/uglify-es/bin/uglifyjs --verbose --warn src/logni-cookie.js
+
+  - echo "uglifyjs es5 minify build/js/logni-cookie-es5.js ... "
+  - ./node_modules/uglifyjs-webpack-plugin/node_modules/uglify-js/bin/uglifyjs build/js/logni-cookie-es5.js
+
+  - echo "istanbul cover logni-cookie[-es5].js ... "
+  - istanbul cover src/logni-cookie.js
+  - istanbul cover build/js/logni-cookie-es5.js
