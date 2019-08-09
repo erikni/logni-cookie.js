@@ -1,8 +1,9 @@
 {
   "name": "logni-cookie.js",
   "version": "0.1.2",
-  "description": "logni.js for cookies",
+  "description": "Cookie javascript library for work with cookies (supporting LogNI logger)",
   "main": "src/logni-cookie.js",
+  "module": "build/js/logni-cookie-es5.js",
   "directories": {
     "test": "test",
     "build": "build"
