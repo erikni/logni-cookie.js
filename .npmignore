@@ -1,0 +1,16 @@
+.*.swp
+.git
+.npmrc
+appveyor.yml
+.travis.yml
+.codeclimate.yml
+.jshintrc
+.nyc_output/
+cc-test-reporter
+npm-debug.log
+node_modules/
+coverage/
+build.sh
+debug-develop.sh
+bower_components
+vendor
