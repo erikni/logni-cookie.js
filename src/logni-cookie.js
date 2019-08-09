@@ -11,7 +11,7 @@
  * see all: https://github.com/erikni/lognijs-cookie/blob/master/LICENSE
  */
 
-const version = '0.0.1';
+const version = '0.1.1';
 
 
 // nodejs cookies compatible

@@ -1,6 +1,6 @@
 {
   "name": "lognijs-cookie",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "logni.js for cookies",
   "main": "src/logni-cookie.js",
   "directories": {
