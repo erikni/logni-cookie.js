@@ -55,21 +55,20 @@ _Initialization_
 <script type="text/javascript">
   logniCookie.path = '/'; // set cookie path (optimal)
   logniCookie.domain = '.yourdomain.com'; // set cookie (sub)domain (optimal)
-  logniCookie.expires = '10m'; // 10min expired (optimal)
+  logniCookie.expires = '10M'; // 10min expired (optimal)
 </script>
 ```
 
-Expired values:
+Expired format:
 
-You can specify a time unit after a time value 'X', such as Xy, Xmo, Xw, Xd, Xh or Xm, to represent: 
-- y: years
-- mo: months
-- w: weeks
+You can specify a time unit after a time value 'X', such as XY, Xm, Xw, Xd, XH, XM or XS to represent: 
+- Y: years
+- m: months
+- W: weeks
 - d: days
-- h: hours
-- m/mi: minutes
-- s: seconds
-
+- H: hours 
+- M: minutes 
+- S: seconds
 
 _Set cookie_
 ```
@@ -77,8 +76,10 @@ _Set cookie_
   cookieName = 'TEST1';
   cookieValue = 'AbC' + Math.random();
 
-  logniCookie.set(cookieName, cookieValue, '2h', 'differentdomain.com');
-  logniCookie.set(cookieName, cookieValue, '3w');
+  logniCookie.set(cookieName, cookieValue, '2H', 'differentdomain.com'); // 2hour
+  logniCookie.set(cookieName, cookieValue, '3w'); // 3 week
+  logniCookie.set(cookieName, cookieValue, '10S'); // 10 second
+  logniCookie.set(cookieName, cookieValue, 10); // 10 second (alias for '10s')
 </script>
 ```
 

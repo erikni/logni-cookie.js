@@ -11,7 +11,19 @@
  * see all: https://github.com/erikni/lognijs-cookie/blob/master/LICENSE
  */
 
-const version = '0.1.2';
+/**
+ * @fileoverview Cookie javascript library for work with cookies 
+ * (supporting LogNI logger)
+ * 
+ * @version 0.1.2
+ * @author Erik Brozek - https://github.com/erikni
+ * @since 2019
+ * @static
+ * Website: https://logni.net
+ */
+
+
+const version = '0.1.2-2';
 
 
 // nodejs cookies compatible
@@ -33,6 +45,21 @@ const logniCookie = new function() {
 	this.secure = '';
 	this.path = '/';
 
+	// seconds (compatible with strftime directives)
+	this.__LOGniExpires = {
+		Y: 31536000, // year (365days)
+		y: 31536000, // year (alias)
+		m: 2592000, // month (30days)
+		W: 604800, // week (7days)
+		w: 604800, // week (alias)
+		d: 86400, // day
+		H: 3600, // hour 
+		h: 3600, // hour (alias)
+		M: 60, // minute 
+		S: 1, // second 
+		s: 1 // second (alias)
+	};
+
   	/**
   	 * Create or update cookie
   	 * 
@@ -52,11 +79,7 @@ const logniCookie = new function() {
 		if (value === undefined) value='';
 
 		// set expires
-		if (setExpires) {
-			let date = new Date();
-			date.setTime(date.getTime()+(setExpires*86400*1000));
-			expires = `;expires=${date.toGMTString()}`;
-		}
+		expires = this.__expireStr2ms(setExpires);
 
 		// set domain
 		if (this.domain) domains = `;domain=${this.domain}`;
@@ -67,6 +90,7 @@ const logniCookie = new function() {
 		httponlys = (this.httponly) ? ';httponly' : '';
 		secures = (this.secure) ? ';secure' : '';
 
+		// set cookie
 		const ret =`${name}=${value}${paths}${expires}${domains}${httponlys}${secures}`;
 		this.cookies = ret;
 		console.log(`COOKIE: set ${ret}`);
@@ -74,6 +98,7 @@ const logniCookie = new function() {
 		return ret;
 
 	};
+	// alias function
 	this.save = this.set;
 	this.update = this.set;
 	this.insert = this.set;
@@ -109,6 +134,7 @@ const logniCookie = new function() {
 		console.log('COOKIE: get None');
 		return;
 	};
+	// alias function
 	this.read = this.get;
 
 
@@ -125,8 +151,53 @@ const logniCookie = new function() {
 
 		return 0;
 	};
+	// alias function
 	this.delete = this.del;
 	this.remove = this.del;
+
+
+  	/**
+  	 * Expire string format to milisecond
+  	 * 
+  	 * @param {string} setExpires, expires format (Xy, Xw, Xd, Xm, Xs)
+  	 * @private
+  	 */
+	this.__expireStr2ms = function(setExpires) {
+		let expirestr;
+		let expires = '';
+
+		// global v local
+		if (this.expires) expirestr = this.expires;
+		if (setExpires) expirestr = setExpires;
+
+		// unset expire
+		if (expirestr === undefined) return '';
+
+		// if number? convert to Xs format
+		if (typeof expirestr === "number") expirestr=`${expirestr}s`;
+
+		let l = expirestr.length;
+		if (l==1) expirestr=`${expirestr}s`;
+		l = expirestr.length;
+
+		// parse string format
+		let expireNo = parseInt(expirestr.substring(0,l-1), 10);
+		const expireType = expirestr.substring(l-1,l);
+
+		// convert to miliseconds
+		let expireTypeSec = this.__LOGniExpires[expireType];
+		if (expireTypeSec === undefined) expireTypeSec = 1;
+		console.log(`COOKIE: expire ${setExpires} = no=${expireNo} * sec=${expireTypeSec}`);
+		expireNo = expireNo * expireTypeSec * 1000;
+
+		if (expireNo) {
+			let date = new Date();
+			date.setTime(date.getTime()+expireNo);
+			expires = `;expires=${date.toGMTString()}`;
+		}
+
+		return expires;
+	};
 };
 
 // package.json
