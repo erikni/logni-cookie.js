@@ -23,22 +23,12 @@
  */
 
 
-const version = '0.1.2-2';
-
-
-// nodejs cookies compatible
-let documentCookie = `logni=${version}`;
-try {
-	documentCookie = document.cookie;
-}
-catch(err) {
-	console.log(`[logni-cookie.js] document.cookie err="${err}"`);
-}
+const version = '0.1.2-4';
 
 
 const logniCookie = new function() {
 
-	this.cookies = documentCookie;
+	this.debugMode = false;
 	this.expires = '';
 	this.domain = '';
 	this.httponly = '';
@@ -91,11 +81,10 @@ const logniCookie = new function() {
 		secures = (this.secure) ? ';secure' : '';
 
 		// set cookie
-		const ret =`${name}=${value}${paths}${expires}${domains}${httponlys}${secures}`;
-		this.cookies = ret;
-		console.log(`COOKIE: set ${ret}`);
+		document.cookie = name+"="+value+paths+expires+domains+httponlys+secures;
+		console.log(`COOKIE: set ${name}=${value}${paths}${expires}${domains}${httponlys}${secures}`);
 
-		return ret;
+		return '';
 
 	};
 	// alias function
@@ -112,8 +101,10 @@ const logniCookie = new function() {
   	 */
 	this.get = function(name) {
 		const cookieNameEQ = name + "=";
-		const cookieDecoded = decodeURIComponent(this.cookies);
+		const cookieDecoded = decodeURIComponent(document.cookie);
 		const ca = cookieDecoded.split(';');
+
+		if (this.debugMode) console.log(ca);
 
 		for(let i=0;i < ca.length;i++) {
 			let c = ca[i];
@@ -127,11 +118,9 @@ const logniCookie = new function() {
 				console.log(`COOKIE: get ${name}="${ret}"`);
 				return ret;
 			}
-
 		}
 
-		// this.__debug(`cookieGet ${name} not exist`);
-		console.log('COOKIE: get None');
+		console.log(`COOKIE: get ${name} not exist`);
 		return;
 	};
 	// alias function

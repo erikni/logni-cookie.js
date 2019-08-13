@@ -9,21 +9,48 @@
 	<script src="../src/logni-cookie.js" type="text/javascript"></script>
 	<script type="text/javascript">
 
-		// logniCookie.cookies = document.cookie;
+		document.cookie = "TEST1a=aaa";
+		document.cookie = "TEST1b=bbb";
+		console.log('document.cookie:');
+		console.log(document.cookie);
+		console.log('--------------------------');
+
+		// logniCookie.debugMode = true;
 		logniCookie.path = '/test';
-		logniCookie.httponly = true;
-		logniCookie.domain = '.drmax.cz';
+		// logniCookie.httponly = true;
+		// logniCookie.domain = '.yourdomain.com';
 
-		cookieName = 'TEST1';
-		cookieValue = 'AbC' + Math.random();
+		cookieName1 = 'TEST1';
+		cookieValue1 = '111aaa' + Math.random();
 
-		logniCookie.set(cookieName, cookieValue, '12m', 'eriknb');
-		logniCookie.set(cookieName, cookieValue, '5d');
-		logniCookie.set(cookieName, cookieValue, '5x');
-		logniCookie.set(cookieName, cookieValue, '6');
-		logniCookie.set(cookieName, cookieValue, 10);
-		logniCookie.get(cookieName);
-		logniCookie.del(cookieName);
+		cookieName2 = 'TEST2';
+		cookieValue2 = '222bbb' + Math.random();
+
+		cookieName3 = 'TEST33';
+
+		console.log('cookie set/get:');
+		logniCookie.set(cookieName2, cookieValue2, '12m', 'eriknb');
+		logniCookie.get(cookieName2);
+		console.log('--------------------------');
+
+		logniCookie.set(cookieName1, cookieValue1, '12m', 'eriknb');
+		logniCookie.set(cookieName1, cookieValue1, '5d');
+		logniCookie.set(cookieName1, cookieValue1, '5x');
+		logniCookie.set(cookieName1, cookieValue1, '6');
+		logniCookie.set(cookieName1, cookieValue1, 10);
+		console.log('--------------------------');
+
+		logniCookie.get(cookieName1);
+		logniCookie.get(cookieName2);
+		logniCookie.get(cookieName3);
+		console.log('--------------------------');
+
+		console.log('remove cookie :');
+		logniCookie.del(cookieName1);
+		console.log('--------------------------');
+
+		console.log('document.cookie:');
+		console.log(document.cookie);
 
 	</script>
 
