@@ -22,9 +22,8 @@
  * Website: https://logni.net
  */
 
-
-const version = '0.1.2-4';
-
+// version
+const version = '0.1.2-5';
 
 const logniCookie = new function() {
 
@@ -82,7 +81,7 @@ const logniCookie = new function() {
 
 		// set cookie
 		document.cookie = name+"="+value+paths+expires+domains+httponlys+secures;
-		console.log(`COOKIE: set ${name}=${value}${paths}${expires}${domains}${httponlys}${secures}`);
+		this.__debug(`set ${name}=${value}${paths}${expires}${domains}${httponlys}${secures}`);
 
 		return '';
 
@@ -115,12 +114,12 @@ const logniCookie = new function() {
 
 			if (c.indexOf(cookieNameEQ) === 0) {
 				const ret = c.substring(cookieNameEQ.length,c.length);
-				console.log(`COOKIE: get ${name}="${ret}"`);
+				this.__debug(`get ${name}="${ret}"`);
 				return ret;
 			}
 		}
 
-		console.log(`COOKIE: get ${name} not exist`);
+		this.__debug(`get ${name} not exist`);
 		return;
 	};
 	// alias function
@@ -136,7 +135,7 @@ const logniCookie = new function() {
 	this.del = function(name) {
 		// this.__debug(`cookieDel ${name}`);
 		this.set(name);
-		console.log(`COOKIE: del name=${name}`);
+		this.__debug(`del name=${name}`);
 
 		return 0;
 	};
@@ -176,7 +175,7 @@ const logniCookie = new function() {
 		// convert to miliseconds
 		let expireTypeSec = this.__LOGniExpires[expireType];
 		if (expireTypeSec === undefined) expireTypeSec = 1;
-		console.log(`COOKIE: expire ${setExpires} = no=${expireNo} * sec=${expireTypeSec}`);
+		this.__debug(`expire ${setExpires} = no=${expireNo} * sec=${expireTypeSec}`);
 		expireNo = expireNo * expireTypeSec * 1000;
 
 		if (expireNo) {
@@ -187,6 +186,13 @@ const logniCookie = new function() {
 
 		return expires;
 	};
+
+
+	this.__debug = function(msg) {
+		console.log(`COOKIE: ${msg} [version=${version}]`);
+		return 0;
+	};
+
 };
 
 // package.json
