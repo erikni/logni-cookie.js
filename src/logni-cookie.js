@@ -19,11 +19,11 @@
  * @author Erik Brozek - https://github.com/erikni
  * @since 2019
  * @static
- * Website: https://logni.net
+ * Website: https://logni.net/js/cookie
  */
 
 // version
-const version = '0.1.3';
+const version = '0.1.3-2';
 
 const logniCookie = new function() {
 
@@ -81,9 +81,9 @@ const logniCookie = new function() {
 
 		// set cookie
 		document.cookie = name+"="+value+paths+expires+domains+httponlys+secures;
-		this.__debug(`set ${name}=${value}${paths}${expires}${domains}${httponlys}${secures}`);
+		this.__debug(`set ${name}=${value}${paths}${expires}${domains}${httponlys}${secures} -> ret=0`);
 
-		return '';
+		return 0;
 
 	};
 	// alias function
@@ -113,13 +113,13 @@ const logniCookie = new function() {
 			}
 
 			if (c.indexOf(cookieNameEQ) === 0) {
-				const ret = c.substring(cookieNameEQ.length,c.length);
-				this.__debug(`get ${name}="${ret}"`);
+				const ret = this.__convert(c.substring(cookieNameEQ.length,c.length));
+				this.__debug(`get ${name} -> ret=${ret} (type=${typeof ret})`);
 				return ret;
 			}
 		}
 
-		this.__debug(`get ${name} not exist`);
+		this.__debug(`get ${name} not exist -> ret=""`);
 		return;
 	};
 	// alias function
@@ -134,10 +134,10 @@ const logniCookie = new function() {
   	 */
 	this.del = function(name) {
 		// this.__debug(`cookieDel ${name}`);
-		this.set(name);
-		this.__debug(`del name=${name}`);
+		const ret = this.set(name);
+		this.__debug(`del name=${name} -> ret=${ret}`);
 
-		return 0;
+		return ret;
 	};
 	// alias function
 	this.delete = this.del;
@@ -175,7 +175,7 @@ const logniCookie = new function() {
 		// convert to miliseconds
 		let expireTypeSec = this.__LOGniExpires[expireType];
 		if (expireTypeSec === undefined) expireTypeSec = 1;
-		this.__debug(`expire ${setExpires} = no=${expireNo} * sec=${expireTypeSec}`);
+		if (this.debugMode) this.__debug(`expire ${setExpires} = no=${expireNo} * sec=${expireTypeSec}`);
 		expireNo = expireNo * expireTypeSec * 1000;
 
 		if (expireNo) {
@@ -188,11 +188,37 @@ const logniCookie = new function() {
 	};
 
 
+  	/**
+  	 * Debug message
+  	 * 
+  	 * @param {string} msg,
+  	 * @static
+  	 */
 	this.__debug = function(msg) {
 		console.log(`COOKIE: ${msg} [version=${version}]`);
+
 		return 0;
 	};
 
+
+  	/**
+  	 * Convert string -> string|number
+  	 * 
+  	 * @param {string} value,
+  	 * @static
+  	 */
+	this.__convert = function(value) {
+		if (this.debugMode) this.__debug(`convert from value="${value}" type=${typeof value} -> isNumber=${Number(value)}`);
+
+		// string
+		if (isNaN(value)) return value
+
+		const value1 = value * 1;
+		if (typeof value1 !== "number") return value
+
+		// number
+		return value1;
+	};
 };
 
 // package.json

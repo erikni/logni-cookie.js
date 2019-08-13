@@ -20,17 +20,25 @@
 		// logniCookie.httponly = true;
 		// logniCookie.domain = '.yourdomain.com';
 
-		cookieName1 = 'TEST1';
-		cookieValue1 = '111aaa' + Math.random();
+		cookieName1 = 'TEST1str';
+		cookieValue1 = 'aa11' + Math.random();
 
-		cookieName2 = 'TEST2';
-		cookieValue2 = '222bbb' + Math.random();
+		cookieName2 = 'TEST2str';
+		cookieValue2 = '22bb' + Math.random();
 
-		cookieName3 = 'TEST33';
+		cookieName3 = 'TEST3int';
+		cookieValue3 = 111;
+
+		cookieName4 = 'TEST4float';
+		cookieValue4 = 123.456;
 
 		console.log('cookie set/get:');
 		logniCookie.set(cookieName2, cookieValue2, '12m', 'eriknb');
+		logniCookie.set(cookieName3, cookieValue3, '11m', 'eriknb');
+		logniCookie.set(cookieName4, cookieValue4, '10m', 'eriknb');
 		logniCookie.get(cookieName2);
+		logniCookie.get(cookieName3);
+		logniCookie.get(cookieName4);
 		console.log('--------------------------');
 
 		logniCookie.set(cookieName1, cookieValue1, '12m', 'eriknb');
