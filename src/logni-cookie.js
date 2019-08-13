@@ -15,7 +15,7 @@
  * @fileoverview Cookie javascript library for work with cookies 
  * (supporting LogNI logger)
  * 
- * @version 0.1.2
+ * @version 0.1.3
  * @author Erik Brozek - https://github.com/erikni
  * @since 2019
  * @static
@@ -23,7 +23,7 @@
  */
 
 // version
-const version = '0.1.2-5';
+const version = '0.1.3';
 
 const logniCookie = new function() {
 
