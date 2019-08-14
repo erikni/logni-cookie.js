@@ -208,13 +208,16 @@ const logniCookie = new function() {
   	 * @static
   	 */
 	this.__convert = function(value) {
-		if (this.debugMode) this.__debug(`convert from value="${value}" type=${typeof value} -> isNumber=${Number(value)}`);
+		const typeVal = typeof value;
+		const isNum = Number(value);
+
+		if (this.debugMode) this.__debug(`convert value="${value}" type=${typeVal} -> isNum=${isNum}`);
 
 		// string
-		if (isNaN(value)) return value
+		if (isNaN(value)) return value;
 
 		const value1 = value * 1;
-		if (typeof value1 !== "number") return value
+		if (typeof value1 !== "number") return value;
 
 		// number
 		return value1;
