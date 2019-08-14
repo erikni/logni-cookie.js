@@ -52,3 +52,13 @@ script:
   - echo "istanbul cover logni-cookie[-es5].js ... "
   - istanbul cover src/logni-cookie.js
   - istanbul cover build/js/logni-cookie-es5.js
+
+  - echo "codecov ... "
+  - codecov --token=638af0a4-b3aa-4863-9560-958f4968122d
+
+env:
+  - CODECOV_TOKEN="638af0a4-b3aa-4863-9560-958f4968122d"
+
+after_success:
+  - codecov
+
