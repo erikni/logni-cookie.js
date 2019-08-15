@@ -109,6 +109,7 @@ _Variables_
   cookieNameSets[cookieName3] = cookieValue3;
   cookieNameSets[cookieName4] = cookieValue4;
 </script>
+```
 
 
 _Setting per one cookie_
