@@ -66,16 +66,16 @@ _Initialization_
 - path (string) - If not specified, defaults to the current path of the current document location. The path must be absolute (see RFC 6265). For more information on how to use relative paths. (default is "/", example: /, /path)
 
 
-Expires format:
+_Expired format_ (expires):
 
 You can specify a time unit after a time value 'X', such as XY, Xm, Xw, Xd, XH, XM or XS to represent: 
-- Y: years
-- m: months
-- W: weeks
-- d: days
-- H: hours 
+- Y: years (alias: y)
+- m: months 
+- W: weeks (alias: w)
+- d: days 
+- H: hours (alias: h) 
 - M: minutes 
-- S: seconds
+- S: seconds (alias: s)
 
 _Methods_
 
@@ -136,7 +136,7 @@ _Read / remove cookie_
   logniCookie.gets(cookieNames); // more cookies
   
   logniCookie.del(cookieName); // one cookie
-  logniCookie.dels(cookieName); // more cookies
+  logniCookie.dels(cookieNames); // more cookies
 </script>
 ```
 
