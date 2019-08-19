@@ -15,7 +15,7 @@
  * @fileoverview Cookie javascript library for work with cookies 
  * (supporting LogNI logger)
  * 
- * @version 0.1.4
+ * @version 0.1.5
  * @author Erik Brozek - https://github.com/erikni
  * @since 2019
  * @static
@@ -23,7 +23,7 @@
  */
 
 // version
-const version = '0.1.4';
+const version = '0.1.5';
 
 const logniCookie = new function() {
 
@@ -49,6 +49,7 @@ const logniCookie = new function() {
 		s: 1 // second (alias)
 	};
 
+
   	/**
   	 * Create or update cookie
   	 * 
@@ -59,13 +60,37 @@ const logniCookie = new function() {
   	 * @static
   	 */
 	this.set = function(name, value, setExpires, setDomain) {
+		if (name === undefined) return 1;
+		if (value === undefined) value = '';
+
+		let names = {};
+		names[name] = value;
+
+		return this.sets(names, setExpires, setDomain);
+	};
+	// alias function
+	this.save = this.set;
+	this.update = this.set;
+	this.insert = this.set;
+
+
+  	/**
+  	 * Create or update cookies
+  	 * 
+  	 * @param {array} names, cookie names
+  	 * @param {string} value, cookie value
+  	 * @param {string} setExpires, cookie expire in format NoType
+  	 * @param {string} setDomain, cookie domain
+  	 * @static
+  	 */
+	this.sets = function(names, setExpires, setDomain) {
 		let expires = '';
 		let domains = '';
 		let httponlys;
 		let secures;
 		let paths = '/';
 
-		if (value === undefined) value='';
+		if (names === undefined) return 1;
 
 		// set expires
 		expires = this.__expireStr2ms(setExpires);
@@ -79,17 +104,21 @@ const logniCookie = new function() {
 		httponlys = (this.httponly) ? ';httponly' : '';
 		secures = (this.secure) ? ';secure' : '';
 
+		// name=value
+		let nameValue = '';
+		for (var name in names) {
+			nameValue=`${nameValue};${name}=${names[name]}`;
+		}
+		const l = nameValue.lenght;
+		if (nameValue) nameValue=nameValue.substring(1,l);
+
 		// set cookie
-		document.cookie = name+"="+value+paths+expires+domains+httponlys+secures;
-		this.__debug(`set ${name}=${value}${paths}${expires}${domains}${httponlys}${secures} -> ret=0`);
+		document.cookie = nameValue+paths+expires+domains+httponlys+secures;
+		this.__debug(`set ${nameValue}${paths}${expires}${domains}${httponlys}${secures} -> ret=0`);
 
 		return 0;
 
 	};
-	// alias function
-	this.save = this.set;
-	this.update = this.set;
-	this.insert = this.set;
 
 
   	/**
@@ -99,6 +128,8 @@ const logniCookie = new function() {
   	 * @static
   	 */
 	this.get = function(name) {
+		if (name === undefined) return;
+
 		const cookieNameEQ = name + "=";
 		const cookieDecoded = decodeURIComponent(document.cookie);
 		const ca = cookieDecoded.split(';');
@@ -127,13 +158,47 @@ const logniCookie = new function() {
 
 
   	/**
+  	 * Multi read cookies
+  	 * 
+  	 * @param {array} names, cookie names
+  	 * @static
+  	 */
+	this.getAll = function(names) {
+		const cookies = document.cookie;
+
+		this.__debug(`getAll -> ret=${cookies}`);
+		return cookies;
+	};
+
+
+  	/**
+  	 * Multi read cookies
+  	 * 
+  	 * @param {array} names, cookie names
+  	 * @static
+  	 */
+	this.gets = function(names) {
+		let rets = {};
+		let ret = 0;
+		if (name === undefined) return 1,rets;
+		
+		for (var no in names) {
+			const name = names[no];
+			rets[name] = this.get(name);
+			if (rets[name] === undefined) ret = 1;
+		}
+
+		this.__debug(`gets ${names} -> ret=${ret},${JSON.stringify(rets)}`);
+		return ret, rets;
+	};
+
+  	/**
   	 * Remove cookie
   	 * 
   	 * @param {string} name, cookie name
   	 * @static
   	 */
 	this.del = function(name) {
-		// this.__debug(`cookieDel ${name}`);
 		const ret = this.set(name);
 		this.__debug(`del name=${name} -> ret=${ret}`);
 
@@ -142,6 +207,27 @@ const logniCookie = new function() {
 	// alias function
 	this.delete = this.del;
 	this.remove = this.del;
+
+
+  	/**
+  	 * Multi remove cookies
+  	 * 
+  	 * @param {array} names, cookie names
+  	 * @static
+  	 */
+	this.dels = function(names) {
+		let setnames = [];
+
+		for (var no in names) {
+			const name = names[no];
+			setnames[name] = '';
+		}
+
+		return this.sets(setnames);
+	};
+	this.deletes = this.dels;
+	this.removes = this.dels;
+
 
 
   	/**

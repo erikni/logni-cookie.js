@@ -58,37 +58,85 @@ _Initialization_
   logniCookie.expires = '10M'; // 10min expired (optimal)
 </script>
 ```
+- debugMode (boolean) - Debug ode
+- expires (string) - Specified it will expire at the end of session.
+- domain (string) - If not specified, this defaults to the host portion of the current document location. Contrary to earlier specifications, leading dots in domain names are ignored, but browsers may decline to set the cookie containing such dots. If a domain is specified, subdomains are always included. (example: 'example.com' or 'subdomain.example.com')
+- httponly (boolean) - cookie attribute can help to mitigate this attack by preventing access to cookie value through Javascript
+- secure (boolean) - Cookie to only be transmitted over secure protocol as https. Before Chrome 52, this flag could appear with cookies from http domains.
+- path (string) - If not specified, defaults to the current path of the current document location. The path must be absolute (see RFC 6265). For more information on how to use relative paths. (default is "/", example: /, /path)
 
-Expired format:
+
+_Expired format_ (expires):
 
 You can specify a time unit after a time value 'X', such as XY, Xm, Xw, Xd, XH, XM or XS to represent: 
-- Y: years
-- m: months
-- W: weeks
-- d: days
-- H: hours 
+- Y: years (alias: y)
+- m: months 
+- W: weeks (alias: w)
+- d: days 
+- H: hours (alias: h) 
 - M: minutes 
-- S: seconds
+- S: seconds (alias: s)
 
-_Set cookie_
+_Methods_
+
+- get() - read one cookie
+- set() - setting one cookie
+- del() - remove one cookie
+- gets() - read more cookies
+- sets() - setting more cookies
+- gets() - remove more cookies
+- getAll() - is a string containing a semicolon-separated list of all cookies (i.e. key=value pairs). Note that each key and value may be surrounded by whitespace (space and tab characters): in fact, RFC 6265 mandates a single space after each semicolon, but some user agents may not abide by this.
+
+
+_Variables_
 ```
 <script type="text/javascript">
-  cookieName = 'TEST1';
-  cookieValue = 'AbC' + Math.random();
+  cookieName1 = 'TEST1str';
+  cookieValue1 = 'aa11' + Math.random();
 
-  logniCookie.set(cookieName, cookieValue, '2H', 'differentdomain.com'); // 2hour
-  logniCookie.set(cookieName, cookieValue, '3w'); // 3 week
-  logniCookie.set(cookieName, cookieValue, '10S'); // 10 second
-  logniCookie.set(cookieName, cookieValue, 10); // 10 second (alias for '10s')
+  cookieName2 = 'TEST2str';
+  cookieValue2 = '22bb' + Math.random();
+
+  cookieName3 = 'TEST3int';
+  cookieValue3 = 111;
+
+  const cookieName4 = 'TEST4float';
+  const cookieValue4 = 123.456;
+
+  const cookieNames = [cookieName1, cookieName2, cookieName3, cookieName4];
+  let cookieNameSets = {}
+  cookieNameSets[cookieName1] = cookieValue1;
+  cookieNameSets[cookieName3] = cookieValue3;
+  cookieNameSets[cookieName4] = cookieValue4;
 </script>
 ```
 
+
+_Setting per one cookie_
+```
+<script type="text/javascript">
+  logniCookie.set(cookieName1, cookieValue1, '2H', 'differentdomain.com'); // 2hour
+  logniCookie.set(cookieName1, cookieValue1, '3w'); // 3 week
+  logniCookie.set(cookieName1, cookieValue1, '10S'); // 10 second
+  logniCookie.set(cookieName1, cookieValue1, 10); // 10 second (alias for '10s')
+</script>
+```
+
+_or settings for more cookies_
+```
+<script type="text/javascript">
+  logniCookie.sets(cookieNameSets, 'differentdomain.com'); // 2hour
+</script>
+
+```
 _Read / remove cookie_
 ```
 <script type="text/javascript">
-  logniCookie.get(cookieName);
+  logniCookie.get(cookieName); // one cookie
+  logniCookie.gets(cookieNames); // more cookies
   
-  logniCookie.del(cookieName);
+  logniCookie.del(cookieName); // one cookie
+  logniCookie.dels(cookieNames); // more cookies
 </script>
 ```
 

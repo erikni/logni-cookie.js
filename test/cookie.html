@@ -12,10 +12,10 @@
 		document.cookie = "TEST1a=aaa";
 		document.cookie = "TEST1b=bbb";
 		console.log('document.cookie:');
-		console.log(document.cookie);
+		logniCookie.getAll();
 		console.log('--------------------------');
 
-		// logniCookie.debugMode = true;
+		logniCookie.debugMode = true;
 		logniCookie.path = '/test';
 		// logniCookie.httponly = true;
 		// logniCookie.domain = '.yourdomain.com';
@@ -29,8 +29,14 @@
 		cookieName3 = 'TEST3int';
 		cookieValue3 = 111;
 
-		cookieName4 = 'TEST4float';
-		cookieValue4 = 123.456;
+		const cookieName4 = 'TEST4float';
+		const cookieValue4 = 123.456;
+
+		const cookieNames = [cookieName1, cookieName2, cookieName3, cookieName4];
+		let cookieNameSets = {}
+		cookieNameSets[cookieName1] = cookieValue1;
+		cookieNameSets[cookieName3] = cookieValue3;
+		cookieNameSets[cookieName4] = cookieValue4;
 
 		console.log('cookie set/get:');
 		logniCookie.set(cookieName2, cookieValue2, '12m', 'eriknb');
@@ -57,8 +63,20 @@
 		logniCookie.del(cookieName1);
 		console.log('--------------------------');
 
+		console.log('muti set:');
+		logniCookie.sets(cookieNameSets);
+		console.log('--------------------------');
+		
+		console.log('muti get:');
+		logniCookie.gets(cookieNames);
+		console.log('--------------------------');
+		
+		console.log('muti del:');
+		logniCookie.dels(cookieNames);
+		console.log('--------------------------');
+
 		console.log('document.cookie:');
-		console.log(document.cookie);
+		logniCookie.getAll();
 
 	</script>
 
